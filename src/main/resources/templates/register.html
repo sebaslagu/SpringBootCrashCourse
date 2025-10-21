@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Spring Boot Notes</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <h1>Register</h1>
+            
+            <div th:if="${error}" class="error-message" th:text="${error}"></div>
+            
+            <form th:action="@{/web/register}" th:object="${registerForm}" method="post">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" th:field="*{email}" required>
+                    <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" th:field="*{password}" required>
+                    <span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    <small class="help-text">
+                        Password must be at least 9 characters long and contain at least one digit, 
+                        uppercase and lowercase character.
+                    </small>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            
+            <div class="auth-link">
+                Already have an account? <a th:href="@{/web/login}">Login here</a>
+            </div>
+            
+            <div class="auth-link">
+                <a th:href="@{/web/home}">Back to Home</a>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/auth.js}"></script>
+</body>
+</html>

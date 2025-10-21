@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
 class SecurityConfig(
@@ -22,10 +23,14 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers("/")
+                    .requestMatchers("/", "/web/home", "/web/login", "/web/register")
+                    .permitAll()
+                    .requestMatchers("/css/**", "/js/**", "/images/**")
                     .permitAll()
                     .requestMatchers("/auth/**")
                     .permitAll()
+                    .requestMatchers("/web/**")
+                    .authenticated()
                     .dispatcherTypeMatchers(
                         DispatcherType.ERROR,
                         DispatcherType.FORWARD
@@ -37,6 +42,13 @@ class SecurityConfig(
             .exceptionHandling { configurer ->
                 configurer
                     .authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+            }
+            .logout { logout ->
+                logout
+                    .logoutUrl("/web/logout")
+                    .logoutSuccessUrl("/web/login?logout")
+                    .deleteCookies("access_token", "refresh_token")
+                    .permitAll()
             }
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
             .build()
