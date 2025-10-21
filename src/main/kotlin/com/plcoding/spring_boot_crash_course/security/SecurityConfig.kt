@@ -19,14 +19,7 @@ class SecurityConfig(
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         return httpSecurity
-            .csrf { csrf ->
-                // Disable CSRF for REST API endpoints (they use JWT in headers)
-                // Enable CSRF for web form-based endpoints
-                csrf.ignoringRequestMatchers(
-                    AntPathRequestMatcher("/auth/**"),
-                    AntPathRequestMatcher("/notes/**")
-                )
-            }
+            .csrf { csrf -> csrf.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth ->
                 auth
@@ -49,11 +42,6 @@ class SecurityConfig(
             .exceptionHandling { configurer ->
                 configurer
                     .authenticationEntryPoint(HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-            }
-            .formLogin { form ->
-                form
-                    .loginPage("/web/login")
-                    .permitAll()
             }
             .logout { logout ->
                 logout
