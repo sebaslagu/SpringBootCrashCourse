@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Notes - Home</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="home-card">
+            <h1>Welcome to Spring Boot Notes</h1>
+            <p>Manage your notes securely with our application.</p>
+            
+            <div class="button-group">
+                <a th:href="@{/web/login}" class="btn btn-primary">Login</a>
+                <a th:href="@{/web/register}" class="btn btn-secondary">Register</a>
+            </div>
+            
+            <div class="features">
+                <h2>Features</h2>
+                <ul>
+                    <li>🔐 Secure authentication with JWT</li>
+                    <li>📝 Create, read, update, and delete notes</li>
+                    <li>🎨 Colorful note cards for better organization</li>
+                    <li>🔄 RESTful API available for integration</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
